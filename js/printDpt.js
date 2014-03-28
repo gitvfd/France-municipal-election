@@ -114,6 +114,7 @@ function printDPT(URL,URLData,coordinates){
                                             if (parseInt(dataCity.nb_voix) < parseInt(votant1) && parseInt(dataCity.nb_voix) >= parseInt(votant2)){
                                                 parti3 =parti2;
                                                 parti2 = decodeURIComponent(dataCity.nom) + " (" + dataCity.parti + "): " + dataCity.nb_voix +" votes ("+ dataCity.percents_exprimes + " % )";
+                                                votant2 = dataCity.nb_voix;
                                                 if(parti3 == parti2){parti3 = "";}
 
                                             }
