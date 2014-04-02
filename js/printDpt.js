@@ -25,7 +25,7 @@ function printDPT(URL,URLData,coordinates){
 
     var color = d3.scale.ordinal()
             .domain(["LDIV","INDIVIDU","LEXD","LFN","LDVD","LUD","LUMP","LUC","LMDM","LUDI","LSOC","LUG","LPG","LDVG","LCOM","LFG","LEXG","LVEC"])
-            .range(["D8D8D8","FFFFCC","000000","000033","000066","000099","0000CC","FF9900","FF9933","FF9966","CC33FF","CC33CC","CC3399","CC3366","CC3333","CC3330","CC0000","00CC33"]);
+            .range(["#D8D8D8","#FFFFCC","#000000","#000033","#000066","#000099","#0000CC","#FF9900","#FF9933","#FF9966","#CC33FF","#CC33CC","#CC3399","#CC3366","#CC3333","#CC3330","#CC0000","#00CC33"]);
 
     d3.csv(URLData, function(error,resultDpt){
     
@@ -40,7 +40,6 @@ function printDPT(URL,URLData,coordinates){
                             var resultCity=resultDpt.filter(function(data) {
                                 return(data.code_insee == d.code_insee)
                             });
-                            console.log(resultCity);
                             voteNbr=0;
 
                             /**resultCity=resultCity.reverse(function(a,b){return a.nb_voix < b.nb_voix;});
@@ -61,8 +60,6 @@ function printDPT(URL,URLData,coordinates){
                                 if (parseInt(dataCity.nb_voix) >= parseInt(voteNbr)){
                                     colorByScore[dataCity.code_insee] = dataCity.parti;
                                     voteNbr = dataCity.nb_voix; 
-                                    console.log(voteNbr);
-                                    console.log(colorByScore[d.code_insee] );
 
                                 };
                             });
@@ -79,8 +76,8 @@ function printDPT(URL,URLData,coordinates){
                             .on("mouseover", function(d) {
                                 d3.select(this).style("opacity",0.5);
 
-                                var xPosition = cityPath.centroid(d)[0]+30;
-                                var yPosition = cityPath.centroid(d)[1]+0;
+                                var xPosition = cityPath.centroid(d)[0]+60;
+                                var yPosition = cityPath.centroid(d)[1]+40;
 
                                 //Update the tooltip position and value
                                 d3.select("#cityTooltip")

@@ -71,12 +71,66 @@
 	      font-size: 10px;
 	      line-height: 12px;
 	    }
+	    #selectedDptBox.hidden {
+	      display: none;
+	    }
+
+	    #coordinatesDptBox.hidden {
+	      display: none;
+	    }
+
+		.button {
+			display: inline-block;
+			outline: none;
+			cursor: pointer;
+			text-align: center;
+			text-decoration: none;
+			font: 12px/100% TheSerif, sans-serif;
+			padding: .25em 1em .45em;
+			text-shadow: 0 1px 1px rgba(0,0,0,.3);
+			-webkit-border-radius: .5em; 
+			-moz-border-radius: .5em;
+			border-radius: .5em;
+			-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		}
+		.button:hover {
+			text-decoration: none;
+		}
+		.button:active {
+			position: relative;
+			top: 1px;
+		}
+		.grey {
+			color: #464646;
+			border: solid 1px #afafaf;
+			background: #6e6e6e;
+			background: -webkit-gradient(linear, left top, left bottom, from(#deeaf1), to(#a5aebf));
+			background: -moz-linear-gradient(top,  #deeaf1,  #a5aebf);
+			filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#deeaf1', endColorstr='#a5aebf');
+		}
+		.grey:hover {
+
+			color: #fff;
+			background: #616161;
+			background: -webkit-gradient(linear, left top, left bottom, from(#757575), to(#4b4b4b));
+			background: -moz-linear-gradient(top,  #757575,  #4b4b4b);
+			filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#757575', endColorstr='#4b4b4b');
+		}
+		.grey:active {
+			color: #afafaf;
+			background: -webkit-gradient(linear, left top, left bottom, from(#a5aebf), to(#deeaf1));
+			background: -moz-linear-gradient(top,  #a5aebf,  #deeaf1);
+			filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5aebf', endColorstr='#deeaf1');
+		}
 
     </style>
 	<body>
 		<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="js/printDpt.js"></script>
+        <script src="js/changeRound.js"></script>
         <script src="js/printLegend.js"></script>
 		<script type="text/javascript">
 			//your beautiful D3 code
@@ -97,17 +151,40 @@
                   <p><strong>2nd : </strong><span id="secondArrived">Parti_2</span></p>
                   <p><strong>3rd : </strong><span id="thirdArrived">Parti_3</span></p>
         </div>
+        <div id="selectedDptBox" class="hidden">
+                  <p><span id="selectedDpt">France</span></p>
+        </div>
 
+        <div id="coordinatesDptBox" class="hidden">
+                  <p><span id="coordinatesDpt0">essai</span></p>
+        </div>
+        <div id="coordinatesDptBox" class="hidden">
+                  <p><span id="coordinatesDpt1">essai</span></p>
+        </div>
 		<div class="row">
-			<div class="span8">
-				<h1><center>French municipal election</center></h1>
-
-				<h2><center>First round</center></h2>			
-				<br>
-				<p>Click on a department to get a glimpse of the election results:</p>
+			<center><div class="span8">
+				<h1>French municipal election</h1>
+				
+			    <h2 style="visibility: visible" id="roundClicked" >2nd round</h2></center>
 			</div>
 		</div>
 		<div class="row">
+				<center>
+
+			<br>
+			<div id="area2" class="span8">
+				<button class="button grey" id="Dimension" type="submit" value="1st round" title="1st round" onclick="changeRound(value)">1<sup>st</sup> round</button>
+				<button class="button grey" id="Dimension" type="submit" value="2nd round" title="2nd round" onclick="changeRound(value)">2<sup>nd</sup> round</button>
+			</div>
+			<div id="area2"  class="row">
+				<div class="span8">
+				</div>
+			</div>	
+
+			</center>
+
+				<br>
+				<p>Click on a department to get a glimpse of the election results:</p>
 	        <div id="area1" class="span8">
 	            <script type="text/javascript">
                     var width = 850, 
@@ -178,18 +255,31 @@
 											console.log(dptName);
 
 											test= svg.append("text")
-                        						.attr("x",width/2-50)
+                        						.attr("x",width/3.1)
                         						.attr("y",height/40)
                         						.attr("width",100)
                         						.attr("height",20)
                         						.text(dptName);
 
 											var URL= "France_json/"+d.id+".json";
-											var URLData= "data/"+d.id+".csv";
-
+											if(document.getElementById("roundClicked").innerHTML=="1st round"){
+												var URLData= "data/"+d.id+".csv";
+											};
+											if(document.getElementById("roundClicked").innerHTML=="2nd round"){
+												var URLData= "data2/"+d.id+".csv";
+											};
 											var coordinates = projection.invert([path.centroid(d)[0]-3,path.centroid(d)[1]+7]);
+
+											console.log(coordinates);
 											printDPT(URL,URLData,coordinates);
-printLegend();
+											document.getElementById("selectedDpt").innerHTML =d.properties.CODE_DEPT;
+											document.getElementById("coordinatesDpt0").innerHTML = coordinates[0];
+											document.getElementById("coordinatesDpt1").innerHTML = coordinates[1];
+
+											console.log(document.getElementById("coordinatesDpt0").innerHTML);
+
+											console.log(document.getElementById("coordinatesDpt1").innerHTML);
+											printLegend();
 										});
 
                     });
